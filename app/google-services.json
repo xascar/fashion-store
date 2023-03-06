@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "657543395670",
+    "project_id": "fashionstore-f5243",
+    "storage_bucket": "fashionstore-f5243.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657543395670:android:50393e2497447630fdbef7",
+        "android_client_info": {
+          "package_name": "dev.xascar.fashionstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657543395670-mke1tvs7oias0al5hsbbjutib2ss25jm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.xascar.fashionstore",
+            "certificate_hash": "dae2ccc806515db91125dad3cefa4c5fabb32e91"
+          }
+        },
+        {
+          "client_id": "657543395670-vaosm4p5larcsrp0uoq0e8srgh2uehhv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT0k-7T6BwA5VMOSMxhPLdXxp-BxJzxjo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657543395670-vaosm4p5larcsrp0uoq0e8srgh2uehhv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

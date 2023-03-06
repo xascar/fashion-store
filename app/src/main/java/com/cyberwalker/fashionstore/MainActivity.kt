@@ -16,23 +16,40 @@
 package com.cyberwalker.fashionstore
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.cyberwalker.fashionstore.login.LoginViewModel
 import com.cyberwalker.fashionstore.navigation.FashionNavGraph
+import com.cyberwalker.fashionstore.navigation.FashionViewModel
+import com.cyberwalker.fashionstore.navigation.Screen
 import com.cyberwalker.fashionstore.ui.theme.FashionStoreTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
+    private val viewModel: LoginViewModel by viewModels()
+    private val fashionViewModel: FashionViewModel by viewModels()
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             FashionStoreTheme {
                 // A surface container using the 'background' color from the theme
@@ -45,6 +62,20 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        viewModel.auth.currentUser?.reload()?.addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                fashionViewModel.updateStarRoute(Screen.Home.route)
+                Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
+            } else {
+                fashionViewModel.updateStarRoute(Screen.Login.route)
+                Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
 
 @Composable
@@ -52,10 +83,8 @@ fun App() {
     FashionNavGraph()
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2,heightDp = 400, widthDp = 300)
 @Composable
 fun DefaultPreview() {
-    FashionStoreTheme {
-        App()
-    }
+    App()
 }

@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,11 +37,11 @@ import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.dump.BottomNav
 import com.cyberwalker.fashionstore.dump.vertical
+import com.cyberwalker.fashionstore.login.LoginViewModel
 import com.cyberwalker.fashionstore.ui.theme.*
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onAction: (actions: HomeScreenActions) -> Unit,
     navController: NavHostController
@@ -57,8 +59,10 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenContent(
     modifier: Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
     onAction: (actions: HomeScreenActions) -> Unit,
 ) {
+
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -89,15 +93,18 @@ private fun HomeScreenContent(
             Spacer(modifier = Modifier.size(24.dp))
             Column {
                 Text(text = "Welcome", style = MaterialTheme.typography.small_caption)
-                Text(text = "Hi Babloo", style = MaterialTheme.typography.medium_14)
+                Text(text = "${viewModel.auth.currentUser?.email}" , style = MaterialTheme.typography.medium_14)
             }
             Spacer(modifier = Modifier.weight(1F))
             Image(
                 modifier = Modifier
                     .size(50.dp)
-                    .clickable { }
+                    .clickable {
+                        viewModel.logout()
+                        onAction(HomeScreenActions.Login)
+                    }
                     .padding(12.dp),
-                painter = painterResource(id = R.drawable.menu_bar),
+                painter = painterResource(id = R.drawable.baseline_logout_24),
                 contentDescription = null
             )
         }
@@ -335,4 +342,5 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
 
 sealed class HomeScreenActions {
     object Details : HomeScreenActions()
+    object Login : HomeScreenActions()
 }

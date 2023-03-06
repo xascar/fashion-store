@@ -85,7 +85,7 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
             modifier = Modifier
                 .weight(1F)
                 .align(Alignment.CenterHorizontally).clickable {
-                    onAction(SplashScreenActions.LoadHome)
+                    onAction(SplashScreenActions.LoadLogin)
                 },
             painter = painterResource(id = R.drawable.splash_cta),
             contentDescription = null
@@ -94,5 +94,5 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
 }
 
 sealed class SplashScreenActions {
-    object LoadHome : SplashScreenActions()
+    object LoadLogin : SplashScreenActions()
 }
