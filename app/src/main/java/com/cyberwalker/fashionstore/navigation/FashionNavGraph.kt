@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.detail.DetailScreen
 import com.cyberwalker.fashionstore.detail.DetailScreenActions
 import com.cyberwalker.fashionstore.dump.animatedComposable
+import com.cyberwalker.fashionstore.favorites.FavoritesScreen
 import com.cyberwalker.fashionstore.home.HomeScreen
 import com.cyberwalker.fashionstore.home.HomeScreenActions
 import com.cyberwalker.fashionstore.login.LoginScreen
@@ -39,6 +40,7 @@ sealed class Screen(val name: String, val route: String) {
     object Splash : Screen("splash", "splash")
     object Login : Screen("login", "login")
     object Home : Screen("home", "home")
+    object Favorites : Screen("favorites","favorites")
     object Detail : Screen("detail", "detail")
 }
 
@@ -75,6 +77,10 @@ fun FashionNavGraph(
         animatedComposable(Screen.Detail.route) {
             DetailScreen(onAction = actions::navigateFromDetails)
         }
+
+        animatedComposable(Screen.Favorites.route) {
+            FavoritesScreen(onAction = actions::navigateFromHome,navController = navController)
+        }
     }
 }
 
@@ -102,6 +108,9 @@ class NavActions(private val navController: NavController) {
             }
             HomeScreenActions.Login -> {
                 navController.navigate(Screen.Login.name)
+            }
+            HomeScreenActions.Favorites -> {
+                navController.navigate(Screen.Favorites.name)
             }
         }
     }

@@ -19,10 +19,11 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.R
-import com.cyberwalker.fashionstore.dump.BottomNav
 import com.cyberwalker.fashionstore.dump.vertical
+import com.cyberwalker.fashionstore.favorites.MyScaffold
 import com.cyberwalker.fashionstore.login.LoginViewModel
 import com.cyberwalker.fashionstore.ui.theme.*
 
@@ -46,18 +47,13 @@ fun HomeScreen(
     onAction: (actions: HomeScreenActions) -> Unit,
     navController: NavHostController
 ) {
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomNav(navController = navController)
-        }
-    ) { innerPadding ->
-        HomeScreenContent(modifier = Modifier.padding(innerPadding), onAction = onAction)
-    }
+    MyScaffold(scaffoldState = scaffoldState,
+        onAction = onAction,
+        navController = navController)
 }
 
 @Composable
-private fun HomeScreenContent(
+fun HomeScreenContent(
     modifier: Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
     onAction: (actions: HomeScreenActions) -> Unit,
@@ -343,4 +339,5 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
 sealed class HomeScreenActions {
     object Details : HomeScreenActions()
     object Login : HomeScreenActions()
+    object Favorites : HomeScreenActions()
 }
