@@ -31,9 +31,9 @@ import com.cyberwalker.fashionstore.navigation.FashionNavGraph
 import com.cyberwalker.fashionstore.navigation.FashionViewModel
 import com.cyberwalker.fashionstore.navigation.Screen
 import com.cyberwalker.fashionstore.ui.theme.FashionStoreTheme
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,12 +44,17 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: LoginViewModel by viewModels()
     private val fashionViewModel: FashionViewModel by viewModels()
+    private val firebaseAnalytics = Firebase.analytics
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM){
+            this.bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "id")
+            this.bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "name")
+            this.bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+        }
         setContent {
             FashionStoreTheme {
                 // A surface container using the 'background' color from the theme

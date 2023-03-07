@@ -6,6 +6,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     // Add the Google services Gradle plugin
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -96,6 +97,9 @@ dependencies {
 
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Crashlytics
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
 }
 

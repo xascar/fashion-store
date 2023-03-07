@@ -118,6 +118,7 @@ fun HomeScreenContent(
                     Toast
                         .makeText(mContext, "Top Deals", Toast.LENGTH_SHORT)
                         .show()
+                    throw RuntimeException("Test Crash") // Force a crash
                 },
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
