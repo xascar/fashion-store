@@ -35,13 +35,12 @@ fun ScaffoldComposable(
         when (currentTab) {
             BottomNavItem.Home.screen_route -> {
                 HomeScreenContent(modifier = Modifier.padding(innerPadding), onAction = onHomeActions, setCurrentTab = setCurrentTab)
-
             }
             BottomNavItem.Liked.screen_route -> {
                 FavoritesScreenContent(modifier = Modifier.padding(innerPadding), onAction = onHomeActions)
             }
             BottomNavItem.Target.screen_route -> {
-                TargetCircleScreenContent(modifier = Modifier.padding(innerPadding), onAction = onDetailAction)
+                TargetCircleScreenContent(modifier = Modifier.padding(innerPadding), setCurrentTab = setCurrentTab)
             }
         }
 
