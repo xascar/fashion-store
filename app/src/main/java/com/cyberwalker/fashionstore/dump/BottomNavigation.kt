@@ -21,21 +21,15 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.navigation.Screen
 import com.cyberwalker.fashionstore.ui.theme.bottomNavbg
 import com.cyberwalker.fashionstore.ui.theme.highlight
 
 @Composable
-fun BottomNav(navController: NavController,
-              isDark: Boolean = isSystemInDarkTheme(),
+fun BottomNav(isDark: Boolean = isSystemInDarkTheme(),
               currentTab : String,
               setCurrentTab : (String) -> Unit
 
@@ -56,7 +50,15 @@ fun BottomNav(navController: NavController,
                 selectedContentColor = highlight,
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = false,
-                selected = currentTab == item.screen_route,
+                selected =
+                    if ((currentTab == Screen.Home.route  || currentTab == Screen.TargetCircle.route) && (item.screen_route == Screen.Home.route  || item.screen_route == Screen.TargetCircle.route)){
+                        true
+                    }
+                    else
+                    {
+                        currentTab == item.screen_route
+                    }
+                           ,
                 onClick = {
                     setCurrentTab(item.screen_route)
                 }
@@ -66,8 +68,8 @@ fun BottomNav(navController: NavController,
 }
 
 sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: String) {
-
     object Home : BottomNavItem("Home", R.drawable.home, Screen.Home.route)
+    object Target : BottomNavItem("Home", R.drawable.home, Screen.TargetCircle.route)
     object Search : BottomNavItem("Search", R.drawable.search, "Search")
     object Liked : BottomNavItem("Liked", R.drawable.liked, Screen.Favorites.route)
     object Profile : BottomNavItem("Profile", R.drawable.profile, "Profile")

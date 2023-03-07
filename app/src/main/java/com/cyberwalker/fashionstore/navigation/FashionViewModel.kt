@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FashionViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(FashionUiState())
+    private val _uiState = MutableStateFlow(FashionUiState(Screen.Splash.route))
     val uiState: StateFlow<FashionUiState> = _uiState.asStateFlow()
 
     fun updateStarRoute(startDestination: String){
@@ -24,5 +24,5 @@ class FashionViewModel @Inject constructor(savedStateHandle: SavedStateHandle) :
 }
 
 data class FashionUiState(
-    val startDestination: String = Screen.Splash.route
+    val startDestination: String
 )

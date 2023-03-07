@@ -34,7 +34,7 @@ private const val TAG = "LoginScreen"
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    onAction: (actions: LoginScreenActions) -> Unit,
+    onAction: () -> Unit,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     ) {
 
@@ -54,7 +54,7 @@ fun LoginScreen(
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success")
                             //val user = viewModel.auth.currentUser
-                            onAction(LoginScreenActions.LoadHome)
+                            onAction
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -83,7 +83,7 @@ fun LoginScreen(
                             Log.d(TAG, "createUserWithEmail:success. ${viewModel.auth.currentUser}")
 //                        val user = auth.currentUser
 //                        updateUI(user)
-                            onAction(LoginScreenActions.LoadHome)
+                            onAction
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -112,7 +112,7 @@ fun LoginScreen(
                         // ((OAuthCredential)authResult.getCredential()).getAccessToken().
                         // The OAuth secret can be retrieved by calling:
                         // ((OAuthCredential)authResult.getCredential()).getSecret().
-                        onAction(LoginScreenActions.LoadHome)
+                        onAction
 
                     }
                     .addOnFailureListener {
@@ -133,7 +133,7 @@ fun LoginScreen(
                         // ((OAuthCredential)authResult.getCredential()).getAccessToken().
                         // The OAuth secret can be retrieved by calling:
                         // ((OAuthCredential)authResult.getCredential()).getSecret().
-                        onAction(LoginScreenActions.LoadHome)
+                        onAction
 
                     }
                     .addOnFailureListener {
@@ -146,15 +146,13 @@ fun LoginScreen(
     }
 
     uiState.firebaseUser?.let {
-
-        onAction(LoginScreenActions.LoadHome)
+        onAction
     }?:
         Scaffold(
             scaffoldState = scaffoldState
         ) { innerPadding ->
             LoginScreenContent(
                 modifier = Modifier.padding(innerPadding),
-                onAction = onAction,
                 isError = isError,
                 login = { user, password ->
                     viewModel.signIn(user, password)
@@ -195,8 +193,7 @@ fun LoginScreenContent(modifier: Modifier,
                        login: (user: String, password: String) -> Unit,
                        signup: (user: String, password: String) -> Unit,
                        github: () -> Unit,
-                       isError: Boolean = false,
-                       onAction: (actions: LoginScreenActions) -> Unit) {
+                       isError: Boolean = false) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -306,21 +303,13 @@ fun LoginScreenContent(modifier: Modifier,
     }
 }
 
-
-sealed class LoginScreenActions {
-    object LoadHome : LoginScreenActions()
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreenContent(modifier = Modifier
-        , login = { _,_->}
-        , signup = {_,_->},
+    LoginScreenContent(
+        modifier = Modifier,
+        login = { _,_->},
+        signup = {_,_->},
         github = {}
-
-    ){
-
-    }
+    )
 }

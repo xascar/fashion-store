@@ -17,9 +17,6 @@ private const val TAG = "LoginViewModel"
 @HiltViewModel
 class LoginViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-//    var uiState by mutableStateOf(LoginUiState())
-//        private set
-
     val auth: FirebaseAuth = Firebase.auth
 
 

@@ -71,7 +71,6 @@ class MainActivity : ComponentActivity() {
                 fashionViewModel.updateStarRoute(Screen.Home.route)
                 Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
             } else {
-                fashionViewModel.updateStarRoute(Screen.Login.route)
                 Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()
             }
         }

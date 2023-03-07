@@ -15,41 +15,40 @@
  */
 package com.cyberwalker.fashionstore.home
 
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.R
+import com.cyberwalker.fashionstore.dump.BottomNavItem
 import com.cyberwalker.fashionstore.dump.vertical
-import com.cyberwalker.fashionstore.favorites.MyScaffold
 import com.cyberwalker.fashionstore.login.LoginViewModel
+import com.cyberwalker.fashionstore.scaffold.ScaffoldComposable
 import com.cyberwalker.fashionstore.ui.theme.*
 
 @Composable
 fun HomeScreen(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onAction: (actions: HomeScreenActions) -> Unit,
-    navController: NavHostController
-) {
-    MyScaffold(scaffoldState = scaffoldState,
-        onAction = onAction,
-        navController = navController)
+    scaffoldState: ScaffoldState,
+    onAction: (actions: HomeScreenActions) -> Unit) {
+    ScaffoldComposable(scaffoldState = scaffoldState,
+        onHomeActions = onAction)
 }
 
 @Composable
@@ -57,6 +56,7 @@ fun HomeScreenContent(
     modifier: Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
     onAction: (actions: HomeScreenActions) -> Unit,
+    setCurrentTab : (String) -> Unit
 ) {
 
     Column(
@@ -105,21 +105,75 @@ fun HomeScreenContent(
             )
         }
 
+        Divider(color = Color.LightGray,
+            modifier = Modifier.padding(start = 32.dp),
+            thickness = 1.dp)
+
+        val mContext = LocalContext.current
+
         Row(
             modifier = Modifier
-                .padding(start = 40.dp, end = 12.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+                .fillMaxWidth()
+                .clickable {
+                    Toast
+                        .makeText(mContext, "Top Deals", Toast.LENGTH_SHORT)
+                        .show()
+                },
+            horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Today's Promo", style = MaterialTheme.typography.medium_18)
-            Spacer(modifier = Modifier.size(40.dp))
+            Spacer(modifier = Modifier.size(32.dp))
             Image(modifier = Modifier
-                .size(50.dp)
-                .clickable { }
-                .padding(16.dp),
-                painter = painterResource(id = R.drawable.arrow_right),
+                .size(40.dp)
+                .padding(8.dp),
+                painter = painterResource(id = R.drawable.sharp_local_offer_24),
                 contentDescription = null)
+            Text(text = "Top Deals", style = MaterialTheme.typography.medium_18)
+        }
+
+        Divider(color = Color.LightGray,
+            modifier = Modifier.padding(start = 72.dp),
+            thickness = 1.dp)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    Toast
+                        .makeText(mContext, "Weekly Ad", Toast.LENGTH_SHORT)
+                        .show()
+                },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.size(32.dp))
+            Image(modifier = Modifier
+                .size(40.dp)
+                .padding(8.dp),
+                painter = painterResource(id = R.drawable.sharp_style_24),
+                contentDescription = null)
+            Text(text = "Weekly Ad", style = MaterialTheme.typography.medium_18)
+        }
+        Divider(color = Color.LightGray,
+            modifier = Modifier.padding(start = 72.dp),
+            thickness = 1.dp)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    setCurrentTab(BottomNavItem.Target.screen_route)
+                },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.size(32.dp))
+            Image(modifier = Modifier
+                .size(40.dp)
+                .padding(8.dp),
+                painter = painterResource(id = R.drawable.sharp_shopping_cart_24),
+                contentDescription = null)
+            Text(text = "Target Circle offers", style = MaterialTheme.typography.medium_18)
         }
 
         Spacer(modifier = Modifier.size(24.dp))
@@ -233,7 +287,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -262,7 +317,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -293,7 +349,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -322,7 +379,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -339,5 +397,4 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
 sealed class HomeScreenActions {
     object Details : HomeScreenActions()
     object Login : HomeScreenActions()
-    object Favorites : HomeScreenActions()
 }

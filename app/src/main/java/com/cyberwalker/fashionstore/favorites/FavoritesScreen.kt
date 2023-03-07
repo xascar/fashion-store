@@ -16,80 +16,37 @@ package com.cyberwalker.fashionstore.favorites
  */
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import com.cyberwalker.fashionstore.home.HomeScreenContent
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.cyberwalker.fashionstore.R
-import com.cyberwalker.fashionstore.dump.BottomNav
-import com.cyberwalker.fashionstore.dump.BottomNavItem
-import com.cyberwalker.fashionstore.dump.vertical
+import com.cyberwalker.fashionstore.detail.DetailScreenActions
 import com.cyberwalker.fashionstore.home.HomeScreenActions
 import com.cyberwalker.fashionstore.login.LoginViewModel
-import com.cyberwalker.fashionstore.ui.theme.*
+import com.cyberwalker.fashionstore.scaffold.ScaffoldComposable
 
 @Composable
 fun FavoritesScreen(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onAction: (actions: HomeScreenActions) -> Unit,
-    navController: NavHostController
+    scaffoldState: ScaffoldState,
+    onHomeActions: (actions: HomeScreenActions) -> Unit
 ) {
-    MyScaffold(scaffoldState = scaffoldState,
-        onAction = onAction,
-        navController = navController)
+    ScaffoldComposable(scaffoldState = scaffoldState,
+        onHomeActions = onHomeActions)
 }
 
-@Composable
-fun MyScaffold(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onAction: (actions: HomeScreenActions) -> Unit,
-    navController: NavHostController) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val (currentTab, setCurrentTab) = remember { mutableStateOf(BottomNavItem.Home.screen_route) }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        bottomBar = {
-            BottomNav(navController = navController,
-                currentTab = currentTab,
-                setCurrentTab = setCurrentTab
-            )
-        }
-    ) { innerPadding ->
-        when (currentTab) {
-            BottomNavItem.Home.screen_route -> {
-                /* Fragment content */
-                HomeScreenContent(modifier = Modifier.padding(innerPadding), onAction = onAction)
-
-            }
-            BottomNavItem.Liked.screen_route -> {
-                FavoritesScreenContent(modifier = Modifier.padding(innerPadding), onAction = onAction)
-            }
-        }
-
-    }
-}
 
 @Composable
 fun FavoritesScreenContent(

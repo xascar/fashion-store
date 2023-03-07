@@ -37,19 +37,13 @@ import com.cyberwalker.fashionstore.ui.theme.small_caption
 
 @Composable
 fun SplashScreen(
-    viewModel: SplashViewModel = hiltViewModel(),
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onAction: (actions: SplashScreenActions) -> Unit
+    onAction: () -> Unit
 ) {
-    Scaffold(
-        scaffoldState = scaffoldState
-    ) { innerPadding ->
-        SplashScreenContent(modifier = Modifier.padding(innerPadding), onAction = onAction)
-    }
+    SplashScreenContent(modifier = Modifier, onAction = onAction)
 }
 
 @Composable
-private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashScreenActions) -> Unit) {
+private fun SplashScreenContent(modifier: Modifier, onAction: () -> Unit) {
     Column(
         modifier = modifier
             .padding(40.dp)
@@ -85,14 +79,10 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
             modifier = Modifier
                 .weight(1F)
                 .align(Alignment.CenterHorizontally).clickable {
-                    onAction(SplashScreenActions.LoadLogin)
+                    onAction
                 },
             painter = painterResource(id = R.drawable.splash_cta),
             contentDescription = null
         )
     }
-}
-
-sealed class SplashScreenActions {
-    object LoadLogin : SplashScreenActions()
 }

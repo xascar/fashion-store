@@ -18,11 +18,14 @@
 package com.cyberwalker.fashionstore.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.cyberwalker.fashionstore.circle.TargetCircleScreen
 import com.cyberwalker.fashionstore.detail.DetailScreen
 import com.cyberwalker.fashionstore.detail.DetailScreenActions
 import com.cyberwalker.fashionstore.dump.animatedComposable
@@ -30,9 +33,7 @@ import com.cyberwalker.fashionstore.favorites.FavoritesScreen
 import com.cyberwalker.fashionstore.home.HomeScreen
 import com.cyberwalker.fashionstore.home.HomeScreenActions
 import com.cyberwalker.fashionstore.login.LoginScreen
-import com.cyberwalker.fashionstore.login.LoginScreenActions
 import com.cyberwalker.fashionstore.splash.SplashScreen
-import com.cyberwalker.fashionstore.splash.SplashScreenActions
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -41,6 +42,7 @@ sealed class Screen(val name: String, val route: String) {
     object Login : Screen("login", "login")
     object Home : Screen("home", "home")
     object Favorites : Screen("favorites","favorites")
+    object TargetCircle : Screen("circle","circle")
     object Detail : Screen("detail", "detail")
 }
 
@@ -50,6 +52,7 @@ fun FashionNavGraph(
     modifier: Modifier = Modifier,
     viewModel: FashionViewModel = hiltViewModel(),
     navController: NavHostController = rememberAnimatedNavController(),
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     actions: NavActions = remember(navController) {
         NavActions(navController)
     }
@@ -71,7 +74,7 @@ fun FashionNavGraph(
         }
 
         animatedComposable(Screen.Home.route) {
-            HomeScreen(onAction = actions::navigateFromHome,navController = navController)
+            HomeScreen(onAction = actions::navigateFromHome, scaffoldState = scaffoldState)
         }
 
         animatedComposable(Screen.Detail.route) {
@@ -79,13 +82,17 @@ fun FashionNavGraph(
         }
 
         animatedComposable(Screen.Favorites.route) {
-            FavoritesScreen(onAction = actions::navigateFromHome,navController = navController)
+            FavoritesScreen(onHomeActions = actions::navigateFromHome, scaffoldState = scaffoldState)
+        }
+
+        animatedComposable(Screen.TargetCircle.route) {
+            TargetCircleScreen(onHomeActions = actions::navigateFromHome, onDetailAction = actions::navigateFromDetails, scaffoldState = scaffoldState)
         }
     }
 }
 
 class NavActions(private val navController: NavController) {
-    fun navigateToLogin(_A: SplashScreenActions) {
+    fun navigateToLogin() {
         navController.navigate(Screen.Login.name) {
             popUpTo(Screen.Login.route){
                 inclusive = true
@@ -93,7 +100,7 @@ class NavActions(private val navController: NavController) {
         }
     }
 
-    fun navigateToHome(_A: LoginScreenActions) {
+    fun navigateToHome() {
         navController.navigate(Screen.Home.name) {
             popUpTo(Screen.Splash.route){
                 inclusive = true
@@ -108,9 +115,6 @@ class NavActions(private val navController: NavController) {
             }
             HomeScreenActions.Login -> {
                 navController.navigate(Screen.Login.name)
-            }
-            HomeScreenActions.Favorites -> {
-                navController.navigate(Screen.Favorites.name)
             }
         }
     }
