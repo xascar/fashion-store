@@ -101,6 +101,9 @@ dependencies {
     // Crashlytics
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
+    // Cloud messaging
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
+
 }
 
 // Allow references to generated code
