@@ -12,17 +12,25 @@ import javax.inject.Inject
 @HiltViewModel
 class FashionViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(FashionUiState(Screen.Splash.route))
+    private val _uiState = MutableStateFlow(FashionUiState(Screen.Splash.route,""))
     val uiState: StateFlow<FashionUiState> = _uiState.asStateFlow()
+
+    private var notificationStartDestination = ""
 
     fun updateStarRoute(startDestination: String){
         _uiState.update { currentState ->
-            currentState.copy(startDestination = startDestination)
+            currentState.copy(startDestination = notificationStartDestination.ifEmpty { startDestination })
         }
+        updateNotificationStart("")
+    }
+
+    fun updateNotificationStart(startDestination: String){
+        notificationStartDestination = startDestination
     }
 
 }
 
 data class FashionUiState(
-    val startDestination: String
+    val startDestination: String,
+    val notificationStartDestination: String
 )

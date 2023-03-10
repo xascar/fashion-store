@@ -7,12 +7,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.detail.DetailScreenActions
 import com.cyberwalker.fashionstore.home.HomeScreenActions
@@ -38,65 +42,95 @@ fun TargetCircleScreenContent(
     viewModel: LoginViewModel = hiltViewModel(),
     setCurrentTab : (String) -> Unit
 ) {
-    LazyColumn {
-        item {
-            LazyRow {
-                items(3) { index ->
-                    Card(
-                        elevation = 8.dp,
-                        modifier = Modifier.padding(8.dp),
-                        onClick = { /* Handle card click */ }
-                    ) {
-                        Column {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(8.dp)
-                            ) {
-                                Image(
-                                    painter = painterResource(R.drawable.fav_1),
-                                    contentDescription = "Favorite",
+
+
+    val circleOffersValue by viewModel.dataSet.observeAsState()
+
+    circleOffersValue?.let {   circleOffers ->
+        LazyColumn {
+            item {
+                LazyRow {
+                    items(circleOffers.size) { id ->
+
+                        var favourite by remember {
+                            mutableStateOf(circleOffers[id].favourite)
+                        }
+
+                        Card(
+                            elevation = 8.dp,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .width(280.dp),
+                            onClick = { /* Handle card click */ }
+                        ) {
+                            Column {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
-                                        .size(24.dp)
-                                        .clickable(onClick = { /* Handle favorite click */ })
-                                )
-                                Text(
-                                    text = "Card $index",
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(start = 8.dp)
-                                )
-                            }
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(8.dp)
-                            ) {
-                                Image(
-                                    painter = painterResource(R.drawable.ic_launcher_foreground),
-                                    contentDescription = "Item image",
-                                    modifier = Modifier
-                                        .size(64.dp)
-                                )
-                                Column(
-                                    modifier = Modifier.padding(start = 16.dp)
+                                        .fillMaxWidth()
+                                        .padding(top = 8.dp, start = 8.dp, end = 8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "Item name",
+                                        text = circleOffers[id].itemName,
                                         fontWeight = FontWeight.Bold,
+                                        modifier = Modifier
+                                            .padding(start = 8.dp)
+                                            .weight(weight = 1F, fill = false)
                                     )
-                                    Text(
-                                        text = "Item price",
-                                        fontWeight = FontWeight.Normal,
+                                    Image(
+                                        painter = painterResource( R.drawable.liked ),
+                                        colorFilter =
+                                        if (favourite) {
+                                            ColorFilter.tint(Color.Black.copy(0.3f))
+                                        }
+                                        else {
+                                            ColorFilter.tint(Color(android.graphics.Color.parseColor("#6ECB63")))
+                                        }
+                                        ,
+                                        contentDescription = "Favorite",
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .padding(end = 8.dp)
+                                            .clickable(onClick = {
+                                                viewModel.updateDataAt(circleOffers[id])
+                                            })
                                     )
+                                }
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    AsyncImage(
+                                        model = circleOffers[id].image,
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(64.dp)
+                                    )
+                                    Column(
+                                        modifier = Modifier.padding(start = 16.dp)
+                                    ) {
+                                        Text(
+                                            text = circleOffers[id].discount,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                        Text(
+                                            text = circleOffers[id].expirationDate,
+                                            fontWeight = FontWeight.Normal,
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-        item {
-            SwipeViewWithTabs(titles = listOf("Item 1", "Item 2", "Item 3"))
+            item {
+                SwipeViewWithTabs(titles = listOf("Special offers", "Just for you", "Saved"))
+            }
         }
     }
+
 }
 
 @Composable
@@ -118,5 +152,16 @@ fun SwipeViewWithTabs(
                 )
             }
         }
+
+
+
     }
 }
+
+data class CircleOffers(
+    val itemName: String = "",
+    val image: String = "",
+    val discount: String = "",
+    val expirationDate: String = "",
+    val favourite: Boolean = false
+)

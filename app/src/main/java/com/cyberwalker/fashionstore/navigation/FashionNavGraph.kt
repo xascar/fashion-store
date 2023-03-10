@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.navDeepLink
 import com.cyberwalker.fashionstore.circle.TargetCircleScreen
 import com.cyberwalker.fashionstore.detail.DetailScreen
 import com.cyberwalker.fashionstore.detail.DetailScreenActions

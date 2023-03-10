@@ -129,7 +129,7 @@ fun HomeScreenContent(
                 .padding(8.dp),
                 painter = painterResource(id = R.drawable.sharp_local_offer_24),
                 contentDescription = null)
-            Text(text = "Top Deals", style = MaterialTheme.typography.medium_18)
+            Text(text = "Top Deals (Test crash)", style = MaterialTheme.typography.medium_18)
         }
 
         Divider(color = Color.LightGray,

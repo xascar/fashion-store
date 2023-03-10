@@ -16,6 +16,7 @@
 package com.cyberwalker.fashionstore
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
             this.bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "name")
             this.bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
         }
+        Log.d(TAG, "onCreate: ${intent.getStringExtra("custom_data_key")}")
         setContent {
             FashionStoreTheme {
                 // A surface container using the 'background' color from the theme
@@ -73,7 +75,15 @@ class MainActivity : ComponentActivity() {
         // Check if user is signed in (non-null) and update UI accordingly.
         viewModel.auth.currentUser?.reload()?.addOnCompleteListener {task ->
             if (task.isSuccessful) {
+                // Printing all extras
+                val bundle = intent.extras
+                if (bundle != null) {
+                    for (key in bundle.keySet()) {
+                        Log.d(TAG, "onStart: $key : ${if (bundle[key] != null) bundle[key] else "NULL"}")
+                    }
+                }
                 fashionViewModel.updateStarRoute(Screen.Home.route)
+
                 Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()

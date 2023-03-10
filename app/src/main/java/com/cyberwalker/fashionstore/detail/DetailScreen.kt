@@ -196,7 +196,7 @@ val textWithLink = buildAnnotatedString {
     pop()
 }
 
-val bullet = "\u2022"
+const val bullet = "\u2022"
 val productInfo = listOf(
     "Dolor sit amet",
     "Lorem ipsum",
