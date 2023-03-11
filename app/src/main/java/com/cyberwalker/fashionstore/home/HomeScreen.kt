@@ -89,7 +89,7 @@ fun HomeScreenContent(
             Spacer(modifier = Modifier.size(24.dp))
             Column {
                 Text(text = "Welcome", style = MaterialTheme.typography.small_caption)
-                Text(text = "${viewModel.auth.currentUser?.email}" , style = MaterialTheme.typography.medium_14)
+                Text(text = "${viewModel.getAuth().currentUser?.email}" , style = MaterialTheme.typography.medium_14)
             }
             Spacer(modifier = Modifier.weight(1F))
             Image(

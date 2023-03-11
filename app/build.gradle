@@ -103,13 +103,14 @@ dependencies {
     // Cloud messaging
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
+    // For implementing FireStore
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
     // Coil for images
     implementation("io.coil-kt:coil-compose:2.2.2")
 
-    // For observing live data as state
+    // For observing live data as state in compose
     implementation 'androidx.compose.runtime:runtime-livedata:1.4.0-beta02'
-
-
 
 }
 

@@ -79,7 +79,7 @@ private fun SplashScreenContent(modifier: Modifier, onAction: () -> Unit) {
             modifier = Modifier
                 .weight(1F)
                 .align(Alignment.CenterHorizontally).clickable {
-                    onAction
+                    onAction.invoke()
                 },
             painter = painterResource(id = R.drawable.splash_cta),
             contentDescription = null

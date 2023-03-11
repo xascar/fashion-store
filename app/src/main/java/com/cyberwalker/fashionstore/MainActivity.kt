@@ -35,6 +35,7 @@ import com.cyberwalker.fashionstore.ui.theme.FashionStoreTheme
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
     private val fashionViewModel: FashionViewModel by viewModels()
     private val firebaseAnalytics = Firebase.analytics
+    private val db = Firebase.firestore
 
 
 
@@ -57,6 +59,7 @@ class MainActivity : ComponentActivity() {
             this.bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
         }
         Log.d(TAG, "onCreate: ${intent.getStringExtra("custom_data_key")}")
+        addData()
         setContent {
             FashionStoreTheme {
                 // A surface container using the 'background' color from the theme
@@ -70,10 +73,45 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun addData() {
+        // Create a new user with a first and last name
+        // Create a new user with a first, middle, and last name
+        val user = hashMapOf(
+            "first" to "Alan",
+            "middle" to "Mathison",
+            "last" to "Turing",
+            "born" to 1912
+        )
+
+        db.collection("users")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents.", exception)
+            }
+
+        // Add a new document with a generated ID
+        db.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error adding document", e)
+            }
+
+
+
+    }
+
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        viewModel.auth.currentUser?.reload()?.addOnCompleteListener {task ->
+        viewModel.getAuth().currentUser?.reload()?.addOnCompleteListener {task ->
             if (task.isSuccessful) {
                 // Printing all extras
                 val bundle = intent.extras
