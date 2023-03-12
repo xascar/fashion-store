@@ -36,6 +36,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.dump.BottomNavItem
 import com.cyberwalker.fashionstore.dump.vertical
@@ -76,20 +77,20 @@ fun HomeScreenContent(
             ) {
                 Spacer(
                     modifier = Modifier
-                        .size(width = 37.dp, height = 40.dp)
+                        .size(50.dp)
                         .background(color = ltgray, shape = RoundedCornerShape(12.dp))
                 )
-                Image(
+                AsyncImage(
+                    model = viewModel.getAuth().currentUser?.photoUrl,
+                    contentDescription = null,
                     modifier = Modifier
                         .size(width = 32.dp, height = 32.dp),
-                    painter = painterResource(id = R.drawable.ic_man),
-                    contentDescription = null
                 )
             }
             Spacer(modifier = Modifier.size(24.dp))
             Column {
                 Text(text = "Welcome", style = MaterialTheme.typography.small_caption)
-                Text(text = "${viewModel.getAuth().currentUser?.email}" , style = MaterialTheme.typography.medium_14)
+                Text(text = "${viewModel.getAuth().currentUser?.displayName}" , style = MaterialTheme.typography.medium_14)
             }
             Spacer(modifier = Modifier.weight(1F))
             Image(

@@ -1,6 +1,7 @@
 package com.cyberwalker.fashionstore.circle
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,10 +20,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.detail.DetailScreenActions
+import com.cyberwalker.fashionstore.dump.BottomNavItem
 import com.cyberwalker.fashionstore.home.HomeScreenActions
-import com.cyberwalker.fashionstore.login.LoginViewModel
 import com.cyberwalker.fashionstore.scaffold.ScaffoldComposable
 import com.cyberwalker.fashionstore.ui.theme.*
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+
 
 @Composable
 fun TargetCircleScreen(
@@ -39,17 +46,46 @@ fun TargetCircleScreen(
 @Composable
 fun TargetCircleScreenContent(
     modifier: Modifier,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: TargetCircleViewModel = hiltViewModel(),
     setCurrentTab : (String) -> Unit
 ) {
 
+    BackHandler {
+        setCurrentTab(BottomNavItem.Home.screen_route)
+    }
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(40.dp)
+        .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+
+    ) {
+        Image(painter = painterResource(id = R.drawable.baseline_arrow_back_24), contentDescription = null,
+            modifier = Modifier.clickable { setCurrentTab(BottomNavItem.Home.screen_route) }
+        )
+        Text(text = "Target Circle offers", modifier = Modifier.padding(start = 8.dp), fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.weight(1F))
+        Image(painter = painterResource(id = R.drawable.baseline_search_24), contentDescription = null)
+    }
 
     val circleOffersValue by viewModel.dataSet.observeAsState()
-
     circleOffersValue?.let {   circleOffers ->
-        LazyColumn {
+        LazyColumn(modifier = modifier.padding(top = 40.dp)) {
             item {
-                LazyRow {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp)
+                    .background(backgroundRed)
+                ) {
+                    Column(modifier = Modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Top offers",fontWeight = FontWeight.Bold, color = Color.White)
+                        Text(text = "Get an even more rewarding Target run", fontWeight = FontWeight.Light, color = Color.White)
+                    }
+                }
+
+                LazyRow(modifier = Modifier.background(backgroundRed)) {
                     items(circleOffers.size) { id ->
 
                         var favourite by remember {
@@ -97,6 +133,7 @@ fun TargetCircleScreenContent(
                                             })
                                     )
                                 }
+                                Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(horizontal = 8.dp))
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier.padding(8.dp)

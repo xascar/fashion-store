@@ -1,7 +1,6 @@
 package com.cyberwalker.fashionstore.login
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -24,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cyberwalker.fashionstore.R
-import com.cyberwalker.fashionstore.ui.theme.medium_18
-import com.google.firebase.auth.OAuthProvider
 
 @Composable
 fun LoginScreen(

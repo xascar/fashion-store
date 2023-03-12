@@ -36,6 +36,7 @@ val cardColorPeach = Color(0xFFFFADAD)
 val cardColorGreen = Color(0xFFC2F784)
 val sizeGreen = Color(0xFFE3F5E0)
 
+val backgroundRed = Color(0xFFCC0000)
 
 val Colors.bottomNavbg: Color get() = if (isLight) Color(0xFFFAFAFA) else dark
 val Colors.txtColor: Color get() = if (isLight) Color(0xFFFAFAFA) else dark
