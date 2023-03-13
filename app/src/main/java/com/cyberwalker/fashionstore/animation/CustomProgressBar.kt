@@ -1,4 +1,4 @@
-package com.cyberwalker.fashionstore.progressbar
+package com.cyberwalker.fashionstore.animation
 
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
@@ -53,7 +53,7 @@ fun CustomProgressBar() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 100.dp, start = 30.dp, end = 30.dp)
+            .padding(top = 32.dp, start = 30.dp, end = 30.dp, bottom = 30.dp)
     ) {
         // Progress bar text
         Row(
@@ -63,7 +63,7 @@ fun CustomProgressBar() {
             horizontalArrangement = Arrangement.End
         )
         {
-            Text(text = "${progress.toInt() * 100}%")
+            Text(text = "${(progress * 100f).toInt()}%")
         }
         // Background
         Box(

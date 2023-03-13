@@ -27,7 +27,7 @@ import com.cyberwalker.fashionstore.ui.theme.*
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import com.cyberwalker.fashionstore.progressbar.CustomProgressBar
+import com.cyberwalker.fashionstore.animation.*
 
 
 @Composable
@@ -190,7 +190,44 @@ fun SwipeViewWithTabs(
         }
 
         if ( selectedTabIndex == 1){
+            AutoComplete()
+            Divider(thickness = 1.dp, color = Color.LightGray)
             CustomProgressBar()
+            Divider(thickness = 1.dp, color = Color.LightGray)
+
+            val dataList = mutableListOf(30,60,90,50,70)
+            val floatValue = mutableListOf<Float>()
+            val datesList = mutableListOf(2,3,4,5,6)
+
+            dataList.forEachIndexed { index, value ->
+
+                floatValue.add(index = index, element = value.toFloat()/dataList.max().toFloat())
+
+            }
+
+            BarGraph(
+                modifier = Modifier.padding(top = 50.dp),
+                graphBarData = floatValue,
+                xAxisScaleData = datesList,
+                barData_ = dataList,
+                height = 300.dp,
+                roundType = BarType.TOP_CURVED,
+                barWidth = 20.dp,
+                barColor = Purple500,
+                barArrangement = Arrangement.SpaceEvenly
+            )
+            Divider(thickness = 1.dp, color = Color.LightGray)
+            // Preview with sample data
+            PieChart(
+                data = mapOf(
+                    Pair("Sample-1", 150),
+                    Pair("Sample-2", 120),
+                    Pair("Sample-3", 110),
+                    Pair("Sample-4", 170),
+                    Pair("Sample-5", 120),
+                )
+            )
+
         }
 
     }
