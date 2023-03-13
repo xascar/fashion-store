@@ -24,11 +24,10 @@ import com.cyberwalker.fashionstore.dump.BottomNavItem
 import com.cyberwalker.fashionstore.home.HomeScreenActions
 import com.cyberwalker.fashionstore.scaffold.ScaffoldComposable
 import com.cyberwalker.fashionstore.ui.theme.*
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.cyberwalker.fashionstore.progressbar.CustomProgressBar
 
 
 @Composable
@@ -190,7 +189,9 @@ fun SwipeViewWithTabs(
             }
         }
 
-
+        if ( selectedTabIndex == 1){
+            CustomProgressBar()
+        }
 
     }
 }

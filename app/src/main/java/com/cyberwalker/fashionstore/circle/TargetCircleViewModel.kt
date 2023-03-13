@@ -13,7 +13,13 @@ import javax.inject.Inject
 @HiltViewModel
 class TargetCircleViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(TargetCircleUiState())
+    private val _uiState = MutableStateFlow(getTargetCircleUiState())
+
+    private fun getTargetCircleUiState(): TargetCircleUiState {
+
+        return  TargetCircleUiState()
+    }
+
     val uiState: StateFlow<TargetCircleUiState> = _uiState.asStateFlow()
 
     private val _dataSet = MutableLiveData<MutableList<CircleOffers>>()
